@@ -1,0 +1,35 @@
+name: Shellcheck
+
+on:
+  push:
+    paths:
+      - '**.sh'
+      - '.github/workflows/shellcheck.yml'
+
+jobs:
+  check-llvmsa-install:
+    runs-on: ubuntu-latest
+    container: debian:buster-slim
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Get Shellcheck
+        run: apt-get update && apt-get install -y shellcheck
+      - name: Check
+        run: shellcheck -x install-llvmsa.sh
+
+  check-gccsa-install:
+    runs-on: ubuntu-latest
+    container: debian:buster-slim
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Get Shellcheck
+        run: apt-get update && apt-get install -y shellcheck
+      - name: Check
+        run: shellcheck -x install-gccsa.sh
+
+          
+          
