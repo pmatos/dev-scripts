@@ -13,7 +13,7 @@ fi
 # This script assumes all relevant system dependencies are installed
 #
 # On debian you need:
-# apt-get install -y gcc cmake wget unzip g++ python libxml2-dev ninja-build python ruby python-pip
+# apt-get install -y git gcc cmake wget unzip g++ python libxml2-dev ninja-build python ruby python-pip
 #
 WORKDIR=$(mktemp -d)
 LOGS=$WORKDIR/logs
@@ -22,7 +22,11 @@ mkdir $WORKDIR && cd $WORKDIR
 mkdir $LOGS
 wget https://github.com/Z3Prover/z3/releases/download/z3-4.8.7/z3-4.8.7-x64-ubuntu-16.04.zip 2>&1 | tee $LOGS/z3-download.log
 unzip z3-4.8.7-x64-ubuntu-16.04.zip 2>&1 | tee $LOGS/z3-extract.log
-mv z3-4.8.7-x64-ubuntu-16.04/bin z3-4.8.7-x64-ubuntu-16.04/include $INSTALL_DIR
+
+mkdir -p $INSTALL_DIR/bin
+mkdir -p $INSTALL_DIR/include
+mv z3-4.8.7-x64-ubuntu-16.04/bin/* $INSTALL_DIR/bin
+mv z3-4.8.7-x64-ubuntu-16.04/include/* $INSTALL_DIR/include
 
 # Make sure z3 is in PATH
 export PATH=$INSTALL_DIR/bin:$PATH
