@@ -1,5 +1,4 @@
 #! /bin/bash
-
 set -e
 
 # Installation directory is the only required argument, which should already exist
