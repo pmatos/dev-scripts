@@ -1,4 +1,4 @@
-FROM debian:buster-slim
+FROM debian:buster-slim AS builder
 LABEL maintainer="pmatos@linki.tools"
 LABEL description="Debian Buster Slim image with LLVM Scan Build compiled with Z3 support for static analysis"
 
@@ -7,8 +7,15 @@ COPY install-llvmsa.sh .
 RUN apt-get update && \
 	apt-get upgrade -y && \
 	apt-get install -y git gcc cmake wget unzip g++ python libxml2-dev ninja-build python ruby python-pip && \
-	./install-llvmsa.sh && \
-	apt-get clean
+	mkdir /llvm && \
+	./install-llvmsa.sh /llvm
 
-CMD ["bash"]
+FROM debian:buster-slim
 
+RUN mkdir /llvm && \
+	apt-get update && \
+	apt-get install -y perl
+COPY --from=builder /llvm/ /llvm
+
+ENV PATH="/llvm/bin:${PATH}"
+ENTRYPOINT ["scan-build"]
