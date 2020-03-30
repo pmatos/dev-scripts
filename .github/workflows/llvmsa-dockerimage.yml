@@ -6,9 +6,6 @@ on:
       - 'install-llvmsa.sh'
       - 'Dockerfile.llvmsa'
       - '.github/workflows/llvmsa-dockerimage.yml'
-
-env:
-  IMAGE_NAME: scan-build_9.0.1
       
 jobs:
   build-image:
@@ -21,10 +18,10 @@ jobs:
         run: docker build . --file Dockerfile.llvmsa --tag image
 
       - name: Log into registry
-        run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login docker.pkg.github.com -u pmatos --password-stdin
+        run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login docker.io -u pmatos --password-stdin
       - name: Push image
         run: |
-          IMAGE_ID=docker.pkg.github.com/pmatos/dev-scripts/$IMAGE_NAME
+          IMAGE_ID=pmatos/scan-build
           # Strip git ref prefix from version
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
           # Strip 'v' prefix from tag name

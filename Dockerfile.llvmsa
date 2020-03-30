@@ -14,7 +14,8 @@ FROM debian:buster-slim
 
 RUN mkdir /llvm && \
 	apt-get update && \
-	apt-get install -y perl
+	apt-get install -y perl make && \
+	apt-get clean
 COPY --from=builder /llvm/ /llvm
 
 ENV PATH="/llvm/bin:${PATH}"
