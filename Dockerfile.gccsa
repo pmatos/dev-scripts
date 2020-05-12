@@ -1,0 +1,25 @@
+FROM debian:buster-slim AS builder
+LABEL maintainer="pmatos@linki.tools"
+LABEL description="Debian Buster Slim image with GCC static analyzer compiled"
+
+COPY install-gccsa.sh .
+
+RUN apt-get update
+RUN apt-get upgrade -y
+RUN apt-get install -y git gcc make wget unzip g++ file flex bison libgmp-dev libmpfr-dev libmpc-dev
+RUN mkdir /gcc
+
+ARG version="10.1.0"
+RUN ./install-gccsa.sh /gcc $version
+
+FROM debian:buster-slim
+
+RUN mkdir /gcc && \
+    apt-get update && \
+    apt-get install -y make && \
+    apt-get clean
+COPY --from=builder /gcc/ /gcc
+
+ENV PATH="/gcc/bin:${PATH}"
+
+CMD ["/bin/bash"]
