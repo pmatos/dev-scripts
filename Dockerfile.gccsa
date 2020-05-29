@@ -1,6 +1,6 @@
 FROM debian:buster-slim AS builder
 LABEL maintainer="pmatos@linki.tools"
-LABEL description="Debian Buster Slim image with GCC static analyzer compiled"
+LABEL description="Debian Buster Slim image with GCC static analyzer compiled in."
 
 COPY install-gccsa.sh .
 
