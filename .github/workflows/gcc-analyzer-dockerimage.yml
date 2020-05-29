@@ -1,0 +1,35 @@
+name: Create GCC Analyzer docker image
+
+on:
+  push:
+    paths:
+      - 'install-gccsa.sh'
+      - 'Dockerfile.gccsa'
+      - '.github/workflows/gcc-analyzer-dockerimage.yml'
+      
+jobs:
+  build-image:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build image
+        run: docker build . --file Dockerfile.gccsa --tag image
+
+      - name: Log into registry
+        run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login docker.io -u pmatos --password-stdin
+      - name: Push image
+        run: |
+          IMAGE_ID=pmatos/gcc-analyzer
+          # Strip git ref prefix from version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          # Strip 'v' prefix from tag name
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+          # Use docker `latest` tag convention
+          [ "$VERSION" == "master" ] && VERSION=latest
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+
+          docker tag image $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
