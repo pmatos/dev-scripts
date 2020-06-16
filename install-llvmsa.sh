@@ -46,7 +46,7 @@ cmake -G Ninja \
       -DCMAKE_BUILD_TYPE=Release \
       ../llvm/ 2>&1 | tee $LOGS/llvm-configure.log
 
-ninja VERBOSE=1 2>&1 | tee $LOGS/llvm-build.log
+ninja -v 2>&1 | tee $LOGS/llvm-build.log
 ninja install 2>&1 | tee $LOGS/llvm-install.log
 
 # Cleanup
