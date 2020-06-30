@@ -32,7 +32,7 @@ export PATH=$INSTALL_DIR/bin:$PATH
 export LD_LIBRARY_PATH=$INSTALL_DIR/bin:$LD_LIBRARY_PATH
 
 cd $WORKDIR
-git clone --depth=1 -b llvmorg-10.0.1 https://github.com/llvm/llvm-project.git 2>&1 | tee $LOGS/llvm-clone.log
+git clone --depth=1 -b llvmorg-10.0.0 https://github.com/llvm/llvm-project.git 2>&1 | tee $LOGS/llvm-clone.log
 cd llvm-project
 wget -O bug41809.patch https://bugs.llvm.org/attachment.cgi?id=22160 | tee $LOGS/llvm-patch-download.log
 patch -p1 < bug41809.patch 2>&1 | tee $LOGS/llvm-patching.log
