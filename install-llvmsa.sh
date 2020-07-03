@@ -1,5 +1,5 @@
 #! /bin/bash
-set -e
+set -euxo pipefail
 
 # Installation directory is the only required argument, which should already exist
 INSTALL_DIR=$1
