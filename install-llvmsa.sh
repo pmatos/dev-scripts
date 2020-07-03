@@ -44,6 +44,7 @@ cmake -G Ninja \
       -DLLVM_ENABLE_PROJECTS="clang;compiler-rt" \
       -DZ3_INCLUDE_DIR=$INSTALL_DIR/include/ \
       -DCMAKE_BUILD_TYPE=Release \
+      -DCOMPILER_RT_BUILD_SANITIZERS=OFF \
       ../llvm/ 2>&1 | tee $LOGS/llvm-configure.log
 
 ninja -v 2>&1 | tee $LOGS/llvm-build.log
