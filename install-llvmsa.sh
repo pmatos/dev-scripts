@@ -29,6 +29,10 @@ mv z3-4.8.7-x64-ubuntu-16.04/include/* $INSTALL_DIR/include
 
 # Make sure z3 is in PATH
 export PATH=$INSTALL_DIR/bin:$PATH
+
+if [ -z "$LD_LIBRARY_PATH" ]; then
+    LD_LIBRARY_PATH=
+fi
 export LD_LIBRARY_PATH=$INSTALL_DIR/bin:$LD_LIBRARY_PATH
 
 cd $WORKDIR
