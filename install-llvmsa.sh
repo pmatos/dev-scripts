@@ -3,6 +3,8 @@ set -exo pipefail
 
 # Installation directory is the only required argument, which should already exist
 INSTALL_DIR=$1
+VERSION=$2
+
 if [ ! -d $INSTALL_DIR ]; then
     echo "installation directory $INSTALL_DIR does not exist"
     exit 1
@@ -19,20 +21,26 @@ LOGS=$WORKDIR/logs
 
 mkdir $WORKDIR && cd $WORKDIR
 mkdir $LOGS
-wget https://github.com/Z3Prover/z3/releases/download/z3-4.8.7/z3-4.8.7-x64-ubuntu-16.04.zip 2>&1 | tee $LOGS/z3-download.log
-unzip z3-4.8.7-x64-ubuntu-16.04.zip 2>&1 | tee $LOGS/z3-extract.log
+wget https://github.com/Z3Prover/z3/releases/download/z3-4.8.9/z3-4.8.9-x64-ubuntu-16.04.zip 2>&1 | tee $LOGS/z3-download.log
+unzip z3-4.8.9-x64-ubuntu-16.04.zip 2>&1 | tee $LOGS/z3-extract.log
 
 mkdir -p $INSTALL_DIR/bin
 mkdir -p $INSTALL_DIR/include
-mv z3-4.8.7-x64-ubuntu-16.04/bin/* $INSTALL_DIR/bin
-mv z3-4.8.7-x64-ubuntu-16.04/include/* $INSTALL_DIR/include
+mv z3-4.8.9-x64-ubuntu-16.04/bin/* $INSTALL_DIR/bin
+mv z3-4.8.9-x64-ubuntu-16.04/include/* $INSTALL_DIR/include
 
 # Make sure z3 is in PATH
 export PATH=$INSTALL_DIR/bin:$PATH
 export LD_LIBRARY_PATH=$INSTALL_DIR/bin:$LD_LIBRARY_PATH
 
 cd $WORKDIR
-git clone --depth=1 -b llvmorg-10.0.0 https://github.com/llvm/llvm-project.git 2>&1 | tee $LOGS/llvm-clone.log
+
+if [ "$VERSION" = "HEAD" ]; then
+    git clone --depth=1 https://github.com/llvm/llvm-project.git 2>&1 | tee $LOGS/llvm-clone.log
+else
+    git clone --depth=1 --branch llvmorg-${VERSION} https://github.com/llvm/llvm-project.git 2>&1 | tee $LOGS/llvm-clone.log
+fi
+
 cd llvm-project
 wget -O bug41809.patch https://bugs.llvm.org/attachment.cgi?id=22160 | tee $LOGS/llvm-patch-download.log
 patch -p1 < bug41809.patch 2>&1 | tee $LOGS/llvm-patching.log
