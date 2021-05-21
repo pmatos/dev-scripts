@@ -4,11 +4,12 @@ LABEL description="Debian Buster Slim image with LLVM Scan Build compiled with Z
 
 COPY install-llvmsa.sh .
 
+ARG version="12.0.0"
 RUN apt-get update && \
 	apt-get upgrade -y && \
 	apt-get install -y git gcc cmake wget unzip g++ python libxml2-dev ninja-build python ruby python-pip && \
 	mkdir /llvm && \
-	./install-llvmsa.sh /llvm
+	./install-llvmsa.sh /llvm ${ARG}
 
 FROM debian:buster-slim
 
