@@ -9,7 +9,7 @@ RUN apt-get update && \
 	apt-get upgrade -y && \
 	apt-get install -y git gcc cmake wget unzip g++ python libxml2-dev ninja-build python ruby python-pip && \
 	mkdir /llvm && \
-	./install-llvmsa.sh /llvm ${ARG}
+	./install-llvmsa.sh /llvm ${version}
 
 FROM debian:buster-slim
 
