@@ -35,7 +35,7 @@ export LD_LIBRARY_PATH=$INSTALL_DIR/bin:$LD_LIBRARY_PATH
 
 cd $WORKDIR
 
-if [ "$VERSION" = "HEAD" ]; then
+if [ "${VERSION}" = "HEAD" ]; then
     git clone --depth=1 https://github.com/llvm/llvm-project.git 2>&1 | tee $LOGS/llvm-clone.log
 else
     git clone --depth=1 --branch llvmorg-${VERSION} https://github.com/llvm/llvm-project.git 2>&1 | tee $LOGS/llvm-clone.log
