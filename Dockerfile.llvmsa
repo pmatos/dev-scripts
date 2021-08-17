@@ -1,17 +1,18 @@
-FROM debian:buster-slim AS builder
-LABEL maintainer="pmatos@linki.tools"
-LABEL description="Debian Buster Slim image with LLVM Scan Build compiled with Z3 support for static analysis"
+FROM debian:bullseye-slim AS builder
+LABEL maintainer="p@ocmatos.com"
+LABEL description="Debian Bullseye Slim image with LLVM Scan Build compiled with Z3 support for static analysis"
 
-COPY install-llvmsa.sh .
 
-ARG version="12.0.0"
 RUN apt-get update && \
 	apt-get upgrade -y && \
-	apt-get install -y git gcc cmake wget unzip g++ python libxml2-dev ninja-build python ruby python-pip && \
-	mkdir /llvm && \
-	./install-llvmsa.sh /llvm ${version}
+	apt-get install -y git gcc cmake wget unzip g++ python libxml2-dev ninja-build python ruby python3-pip && \
+	mkdir /llvm
 
-FROM debian:buster-slim
+COPY install-llvmsa.sh .
+ARG version="12.0.1"
+RUN ./install-llvmsa.sh /llvm ${version}
+
+FROM debian:bullseye-slim
 
 RUN mkdir /llvm && \
 	apt-get update && \

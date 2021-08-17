@@ -18,16 +18,16 @@ fi
 #
 WORKDIR=$(mktemp -d)
 LOGS=$WORKDIR/logs
-
-mkdir $WORKDIR && cd $WORKDIR
 mkdir $LOGS
-wget https://github.com/Z3Prover/z3/releases/download/z3-4.8.9/z3-4.8.9-x64-ubuntu-16.04.zip 2>&1 | tee $LOGS/z3-download.log
-unzip z3-4.8.9-x64-ubuntu-16.04.zip 2>&1 | tee $LOGS/z3-extract.log
+
+cd $WORKDIR
+wget https://github.com/Z3Prover/z3/releases/download/z3-4.8.12/z3-4.8.12-x64-glibc-2.31.zip 2>&1 | tee $LOGS/z3-download.log
+unzip z3-4.8.12-x64-glibc-2.31.zip 2>&1 | tee $LOGS/z3-extract.log
 
 mkdir -p $INSTALL_DIR/bin
 mkdir -p $INSTALL_DIR/include
-mv z3-4.8.9-x64-ubuntu-16.04/bin/* $INSTALL_DIR/bin
-mv z3-4.8.9-x64-ubuntu-16.04/include/* $INSTALL_DIR/include
+mv z3-4.8.12-x64-glibc-2.31/bin/* $INSTALL_DIR/bin
+mv z3-4.8.12-x64-glibc-2.31/include/* $INSTALL_DIR/include
 
 # Make sure z3 is in PATH
 export PATH=$INSTALL_DIR/bin:$PATH
