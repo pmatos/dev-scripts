@@ -9,7 +9,7 @@ RUN apt-get update && \
 	mkdir /llvm
 
 COPY install-llvmsa.sh .
-ARG version="12.0.1"
+ARG version="14.0.6"
 RUN ./install-llvmsa.sh /llvm ${version}
 
 FROM debian:bullseye-slim
